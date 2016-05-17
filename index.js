@@ -45,7 +45,7 @@
       this.birth = Date.now();
       shootingStars.push(this);
       this.x = ~~(Math.random() * width) + (width / 10);
-      this.y = -20;
+      this.y = -(~~(Math.random() * 100) + 20);
       this.velY = (Math.random() * 2) + 0.6;
       this.velX = -this.velY;
       this.alpha = 40;

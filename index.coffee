@@ -29,7 +29,7 @@ class ShootingStar
     shootingStars.push(this)
 
     @x = ~~(Math.random() * width) + (width / 10)
-    @y = -20
+    @y = -(~~(Math.random() * 100) + 20)
     # @velX = -(Math.random() * 1.1) - 0.4
     @velY = (Math.random() * 2) + 0.6
     @velX = -@velY

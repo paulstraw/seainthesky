@@ -30,9 +30,11 @@ class ShootingStar
 
     @x = ~~(Math.random() * width) + (width / 10)
     @y = -20
-    @velX = -(Math.random() * 1.1) - 0.4
+    # @velX = -(Math.random() * 1.1) - 0.4
     @velY = (Math.random() * 2) + 0.6
+    @velX = -@velY
     @alpha = 40
+    @diameter = 9
 
     @starParticles = []
     @starParticles.push new StarParticle() for i in [1..50]
@@ -45,10 +47,11 @@ class ShootingStar
 
     @x += @velX
     @y += @velY
+    @diameter -= 0.02
 
     fill(color(230, 10, 95, @alpha))
     noStroke()
-    ellipse(@x, @y, 9, 9)
+    ellipse(@x, @y, @diameter, @diameter)
     # drawingContext.shadowOffsetX = 0;
     # drawingContext.shadowOffsetY = 0;
     # drawingContext.shadowBlur = 5;
@@ -150,8 +153,8 @@ scheduleBars = (bars) ->
   for bar in bars
     audioEl.addCue bar.start, ->
       lum = map(globalHue, MIN_GLOBAL_HUE, MAX_GLOBAL_HUE, 12, 18)
-      background(color(globalHue, 80, lum, 24))
-      new ShootingStar(bar.duration * 3)
+      background(color(globalHue, 80, lum, 18))
+      new ShootingStar(bar.duration * 3) for i in [0..1]
 
 # sections will spawn nebulae
 scheduleSections = (sections) ->
@@ -179,7 +182,7 @@ window.setup = ->
 
 window.draw = ->
   lum = map(globalHue, MIN_GLOBAL_HUE, MAX_GLOBAL_HUE, 12, 18)
-  background(color(globalHue, 80, lum, 10))
+  background(color(globalHue, 80, lum, 6))
 
   waveform = fft.waveform()
   renderWaveform(waveform)

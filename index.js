@@ -46,9 +46,10 @@
       shootingStars.push(this);
       this.x = ~~(Math.random() * width) + (width / 10);
       this.y = -20;
-      this.velX = -(Math.random() * 1.1) - 0.4;
       this.velY = (Math.random() * 2) + 0.6;
+      this.velX = -this.velY;
       this.alpha = 40;
+      this.diameter = 9;
       this.starParticles = [];
       for (i = j = 1; j <= 50; i = ++j) {
         this.starParticles.push(new StarParticle());
@@ -66,9 +67,10 @@
       }
       this.x += this.velX;
       this.y += this.velY;
+      this.diameter -= 0.02;
       fill(color(230, 10, 95, this.alpha));
       noStroke();
-      ellipse(this.x, this.y, 9, 9);
+      ellipse(this.x, this.y, this.diameter, this.diameter);
       ref = this.starParticles;
       results = [];
       for (j = 0, len = ref.length; j < len; j++) {
@@ -189,10 +191,14 @@
     for (j = 0, len = bars.length; j < len; j++) {
       bar = bars[j];
       results.push(audioEl.addCue(bar.start, function() {
-        var lum;
+        var i, k, lum, results1;
         lum = map(globalHue, MIN_GLOBAL_HUE, MAX_GLOBAL_HUE, 12, 18);
-        background(color(globalHue, 80, lum, 24));
-        return new ShootingStar(bar.duration * 3);
+        background(color(globalHue, 80, lum, 18));
+        results1 = [];
+        for (i = k = 0; k <= 1; i = ++k) {
+          results1.push(new ShootingStar(bar.duration * 3));
+        }
+        return results1;
       }));
     }
     return results;
@@ -237,7 +243,7 @@
   window.draw = function() {
     var j, len, lum, shootingStar, waveform;
     lum = map(globalHue, MIN_GLOBAL_HUE, MAX_GLOBAL_HUE, 12, 18);
-    background(color(globalHue, 80, lum, 10));
+    background(color(globalHue, 80, lum, 6));
     waveform = fft.waveform();
     renderWaveform(waveform);
     renderBars(waveform);

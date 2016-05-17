@@ -148,7 +148,8 @@ scheduleBeats = (beats) ->
       if globalHue > MAX_GLOBAL_HUE || globalHue < MIN_GLOBAL_HUE
         globalHueModifier = -globalHueModifier
 
-# bars with a high enough confidence will trigger shooting stars
+# bars trigger shooting stars
+# bars with a high confidence may spawn nebulae?
 scheduleBars = (bars) ->
   for bar in bars
     audioEl.addCue bar.start, ->

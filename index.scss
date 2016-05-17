@@ -1,0 +1,53 @@
+/* Reset + base: */
+* { margin: 0; padding: 0; border: 0; }
+
+html { overflow-y: scroll; } /* always show scrollbar in non-IE */
+
+body, input, select, textarea, button { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+
+a { -webkit-tap-highlight-color: #FF5E99; }
+
+::-moz-selection { background: #FF5E99; color: #fff; text-shadow: none; }
+::selection { background: #FF5E99; color: #fff; text-shadow: none; }
+
+img { -ms-interpolation-mode: bicubic; }
+strong { font-weight: bold; }
+em { font-style: italic; }
+
+/* Clearfix: */
+.group:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+* html .group { height: 1%; } /* IE6 */
+*:first-child+html .group { min-height: 1px; } /* IE7 */
+/* End clearfix */
+/* End reset + base */
+
+body {
+  background: #111;
+  color: #f4f4f4;
+}
+
+#album-art {
+  position: absolute;
+  width: 600px;
+  left: 50%;
+  top: 50%;
+  margin-left: -300px;
+  margin-top: -300px;
+  z-index: 3;
+  opacity: 0.7;
+}
+
+ul {
+  position: relative;
+  z-index: 2;
+}
+
+canvas {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}

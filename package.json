@@ -1,0 +1,17 @@
+{
+  "name": "seainthesky",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build:js && npm run build:css",
+    "build:js": "./node_modules/coffee-script/bin/coffee -c index.coffee",
+    "build:css": "sass index.scss index.css --sourcemap=none"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "coffee-script": "^1.10.0"
+  }
+}

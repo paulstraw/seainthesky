@@ -321,6 +321,12 @@
     return results;
   };
 
+  window.windowResized = function() {
+    canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92;
+    document.getElementById('canvas-wrapper').style.width = canvasSize + "px";
+    return resizeCanvas(canvasSize, canvasSize);
+  };
+
   window.draw = function() {
     var curDate, j, k, len, len1, lum, nebula, shootingStar, waveform;
     curDate = Date.now();

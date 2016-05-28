@@ -225,6 +225,11 @@ window.setup = ->
   for song in document.querySelectorAll('.song')
     song.addEventListener 'click', selectSong
 
+window.windowResized = ->
+  canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92
+  document.getElementById('canvas-wrapper').style.width = "#{canvasSize}px"
+  resizeCanvas(canvasSize, canvasSize)
+
 window.draw = ->
   curDate = Date.now()
 

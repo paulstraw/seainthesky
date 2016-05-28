@@ -8,6 +8,7 @@ globalHue = MIN_GLOBAL_HUE
 globalHueModifier = 4
 fft = null
 r = 1
+canvasSize = 1
 
 class StarParticle
   constructor: ->
@@ -29,13 +30,15 @@ class ShootingStar
     @birth = Date.now()
     shootingStars.push(this)
 
-    @x = ~~(Math.random() * width) + (width / 10)
+    @x = ~~(Math.random() * canvasSize) + (canvasSize / 10)
     @y = -(~~(Math.random() * 100) + 20)
     # @velX = -(Math.random() * 1.1) - 0.4
     @velY = (Math.random() * 2) + 0.6
     @velX = -@velY
     @alpha = 40
-    @diameter = ~~(Math.random() * (12 - 7) + 7);
+    maxDiameter = canvasSize / 100
+    minDiameter = canvasSize / 150
+    @diameter = ~~(Math.random() * (maxDiameter - minDiameter) + minDiameter);
 
     @starParticles = []
     @starParticles.push new StarParticle() for i in [1..50]
@@ -58,7 +61,7 @@ class ShootingStar
     # drawingContext.shadowBlur = 5;
     # drawingContext.shadowColor = 'rgba(255, 255, 255, 0.75)';
 
-    particle.draw(@x, @y) for particle in @starParticles
+    particle.draw(@x, @y, @diameter * 0.6) for particle in @starParticles
 
   kill: =>
     @starParticles = []
@@ -70,8 +73,9 @@ class NebulaStar
     # @x = ~~(Math.random() * window.innerWidth)
     # @y = ~~(Math.random() * window.innerHeight)
     angle = Math.random() * Math.PI * 2
-    minRad = 300
-    maxRad = 1200
+    minRad = canvasSize / 4
+    maxRad = canvasSize
+    console.log(minRad, maxRad)
     radius = ~~(Math.random() * (maxRad - minRad) + minRad)
 
     @x = Math.cos(angle) * radius;
@@ -87,6 +91,7 @@ class NebulaStar
 
   draw: =>
     @diameter *= 0.9 if @diameter > @origDiameter
+    @diameter = @origDiameter if @diameter > @origDiameter * 3
 
     # fill(color(230, 10, 95, @alpha))
     fill("rgba(220, 208, 229, #{@alpha / 100})")
@@ -117,7 +122,7 @@ class Nebula
   draw: =>
     @rot = (@rot + 0.2) % 360
     push()
-    translate(window.innerWidth / 2, window.innerHeight - (window.innerHeight / 4))
+    translate(canvasSize / 2, canvasSize - (canvasSize / 4))
     rotate(@rot)
     star.draw() for star in @stars
     # rotate(-@rot)
@@ -130,7 +135,7 @@ class Beat
     @decayRate = 1.3
     @extraRad = 1
     @radRate = 1
-    @maxDiameter = Math.min(window.innerWidth, window.innerHeight) / 3
+    @maxDiameter = canvasSize / 3
     @hue = 50
 
   triggerBeat: ->
@@ -177,8 +182,8 @@ renderWaveform = (waveform) ->
   strokeWeight(height / 55)
   # drawingContext.shadowBlur = 0;
   for wave, i in waveform
-    x = map(i, 0, waveform.length, 0, width + 60)
-    y = map(wave, -1, 1, height - 200, height + 200)
+    x = map(i, 0, waveform.length, 0, canvasSize + 60)
+    y = map(wave, -1, 1, height - 200, canvasSize + 200)
     vertex(x, y)
   endShape()
 
@@ -188,8 +193,8 @@ renderBars = (waveform) ->
   strokeWeight(height / 280)
 
   for wave, i in waveform
-    x = map(i, 0, waveform.length, 0, width)
-    y = (-(r + wave * 200)) * (wave * 1.2) + height
+    x = map(i, 0, waveform.length, 0, canvasSize)
+    y = (-(r + wave * 200)) * (wave * 1.2) + canvasSize
     x2 = x
     y2 = height + 5
     # console.log(x, y, x2, y2) if ~~(Math.random() * 1000) == 2
@@ -226,11 +231,15 @@ jsonLoaded = (json) ->
   scheduleBars(json.bars)
   scheduleBeats(json.beats)
   scheduleSections(json.sections)
+  audioEl.elt.volume = 0.9
   audioEl.play()
 
 theBeat = null
 theNebula = null
 window.setup = ->
+  canvasSize = Math.min(windowWidth, windowHeight) * 0.8
+  document.getElementById('album-art').style.width = "#{canvasSize}px"
+
   theBeat = new Beat()
   theNebula = new Nebula()
 
@@ -239,7 +248,7 @@ window.setup = ->
 
   angleMode(DEGREES)
   colorMode(HSB, 360, 100, 100, 100)
-  createCanvas(windowWidth, windowHeight)
+  createCanvas(canvasSize, canvasSize)
 
   for song in document.querySelectorAll('.song')
     song.addEventListener 'click', selectSong

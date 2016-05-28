@@ -210,7 +210,7 @@ jsonLoaded = (json) ->
 theNebula = null
 window.setup = ->
   canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92
-  document.getElementById('album-art').style.width = "#{canvasSize}px"
+  document.getElementById('canvas-wrapper').style.width = "#{canvasSize}px"
 
   theNebula = new Nebula()
 
@@ -219,7 +219,8 @@ window.setup = ->
 
   angleMode(DEGREES)
   colorMode(HSB, 360, 100, 100, 100)
-  createCanvas(canvasSize, canvasSize)
+  cnv = createCanvas(canvasSize, canvasSize)
+  cnv.parent('canvas-wrapper')
 
   for song in document.querySelectorAll('.song')
     song.addEventListener 'click', selectSong

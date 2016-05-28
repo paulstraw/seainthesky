@@ -300,9 +300,9 @@
   theNebula = null;
 
   window.setup = function() {
-    var j, len, ref, results, song;
+    var cnv, j, len, ref, results, song;
     canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92;
-    document.getElementById('album-art').style.width = canvasSize + "px";
+    document.getElementById('canvas-wrapper').style.width = canvasSize + "px";
     theNebula = new Nebula();
     background(2);
     if (!isMobile) {
@@ -310,7 +310,8 @@
     }
     angleMode(DEGREES);
     colorMode(HSB, 360, 100, 100, 100);
-    createCanvas(canvasSize, canvasSize);
+    cnv = createCanvas(canvasSize, canvasSize);
+    cnv.parent('canvas-wrapper');
     ref = document.querySelectorAll('.song');
     results = [];
     for (j = 0, len = ref.length; j < len; j++) {

@@ -27,6 +27,7 @@ body {
 }
 
 #album-art {
+  max-width: 100%;
   position: absolute;
   top: 150px;
   left: 50%;
@@ -42,6 +43,7 @@ ul {
 }
 
 canvas {
+  max-width: 100%;
   display: block;
   position: absolute;
   top: 150px;

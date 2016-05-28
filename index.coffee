@@ -9,6 +9,7 @@ globalHueModifier = 4
 fft = null
 r = 1
 canvasSize = 1
+isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i).test(navigator.userAgent)
 
 class StarParticle
   constructor: ->
@@ -40,7 +41,8 @@ class ShootingStar
     @diameter = (Math.random() * (maxDiameter - minDiameter) + minDiameter);
 
     @starParticles = []
-    @starParticles.push new StarParticle() for i in [1..50]
+    maxParticles = if isMobile then 18 else 50
+    @starParticles.push new StarParticle() for i in [1..maxParticles]
 
   draw: (curDate) =>
     @alpha -= 1 if curDate - @birth > @maxAge
@@ -126,34 +128,6 @@ class Nebula
     pop()
 
 
-class Beat
-  constructor: ->
-    @diameter = 60
-    @decayRate = 1.3
-    @extraRad = 1
-    @radRate = 1
-    @maxDiameter = canvasSize / 3
-    @hue = 50
-
-  triggerBeat: ->
-    @extraRad = 20
-    @radRate = 1.3
-    @hue = (@hue + 5) % 360
-
-  draw: ->
-    # @extraRad *= @radRate * @decayRate
-    # @extraRad = constrain(@extraRad, 0.01, @maxDiameter)
-
-    # @radRate *= 0.98
-    # @radRate = constrain(@radRate, 0.9, 1.5)
-
-    # dia = @diameter + @extraRad
-
-    # fill(color(@hue, 50, 50, 50))
-    # noStroke()
-    # ellipse(windowWidth / 4, windowHeight / 4, dia, dia)
-
-
 selectSong = (e) ->
   src = e.target.getAttribute('data-src')
   mp3 = "#{src}.mp3"
@@ -161,12 +135,14 @@ selectSong = (e) ->
 
   loadJSON(json, jsonLoaded)
 
-  audioEl.stop() if audioEl
+  if audioEl
+    audioEl.clearCues()
+    audioEl.stop()
   audioEl = createAudio(mp3)
-  fft.setInput(audioEl)
+  audioEl.play()
+  audioEl.pause()
 
-triggerBeat = ->
-  theBeat.triggerBeat()
+  fft.setInput(audioEl) unless isMobile
 
 
 renderWaveform = (waveform) ->
@@ -200,7 +176,6 @@ renderBars = (waveform) ->
 # beats cycle the global hue
 scheduleBeats = (beats) ->
   for beat in beats
-    # audioEl.addCue(beat.start, triggerBeat)
     audioEl.addCue beat.start, ->
       star.diameter += 3 for star in theNebula.stars
 
@@ -215,6 +190,7 @@ scheduleBars = (bars) ->
     audioEl.addCue bar.start, ->
       lum = map(globalHue, MIN_GLOBAL_HUE, MAX_GLOBAL_HUE, 12, 18)
       background(color(globalHue, 80, lum, 18))
+
       new ShootingStar(bar.duration * 3) for i in [0..1]
 
 # sections will spawn nebulae
@@ -231,17 +207,15 @@ jsonLoaded = (json) ->
   audioEl.elt.volume = 0.9
   audioEl.play()
 
-theBeat = null
 theNebula = null
 window.setup = ->
   canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92
   document.getElementById('album-art').style.width = "#{canvasSize}px"
 
-  theBeat = new Beat()
   theNebula = new Nebula()
 
   background(2)
-  fft = new p5.FFT(0.8, 128)
+  fft = new p5.FFT(0.8, 128) unless isMobile
 
   angleMode(DEGREES)
   colorMode(HSB, 360, 100, 100, 100)
@@ -256,11 +230,12 @@ window.draw = ->
   lum = map(globalHue, MIN_GLOBAL_HUE, MAX_GLOBAL_HUE, 12, 18)
   background(color(globalHue, 80, lum, 6))
 
-  waveform = fft.waveform()
-  renderWaveform(waveform)
-  renderBars(waveform)
+  unless isMobile
+    waveform = fft.waveform()
+    renderWaveform(waveform)
+    renderBars(waveform)
 
-  theBeat.draw()
+
   nebula?.draw() for nebula in nebulae
   shootingStar?.draw(curDate) for shootingStar in shootingStars
   return null

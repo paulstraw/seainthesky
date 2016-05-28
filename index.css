@@ -58,6 +58,7 @@ body {
   color: #f4f4f4; }
 
 #album-art {
+  max-width: 100%;
   position: absolute;
   top: 150px;
   left: 50%;
@@ -71,6 +72,7 @@ ul {
   z-index: 4; }
 
 canvas {
+  max-width: 100%;
   display: block;
   position: absolute;
   top: 150px;

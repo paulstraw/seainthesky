@@ -62,7 +62,7 @@ class ShootingStar
     # drawingContext.shadowBlur = 5;
     # drawingContext.shadowColor = 'rgba(255, 255, 255, 0.75)';
 
-    particle.draw(@x, @y, @diameter / 2) for particle in @starParticles
+    particle.draw(@x, @y, @diameter * 0.6) for particle in @starParticles
 
   kill: =>
     @starParticles = []
@@ -110,7 +110,6 @@ class NebulaStar
 
 class Nebula
   constructor: (@x, @y, @x2, @y2, @starCount) ->
-    nebulae.push this
     @rot = 0
 
     @stars = []
@@ -229,6 +228,7 @@ window.windowResized = ->
   canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92
   document.getElementById('canvas-wrapper').style.width = "#{canvasSize}px"
   resizeCanvas(canvasSize, canvasSize)
+  theNebula = new Nebula()
 
 window.draw = ->
   curDate = Date.now()
@@ -242,7 +242,7 @@ window.draw = ->
     renderBars(waveform)
 
 
-  nebula?.draw() for nebula in nebulae
+  theNebula?.draw()
   shootingStar?.draw(curDate) for shootingStar in shootingStars
   return null
 

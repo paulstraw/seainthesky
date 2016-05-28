@@ -89,7 +89,7 @@
       results = [];
       for (j = 0, len = ref.length; j < len; j++) {
         particle = ref[j];
-        results.push(particle.draw(this.x, this.y, this.diameter / 2));
+        results.push(particle.draw(this.x, this.y, this.diameter * 0.6));
       }
       return results;
     };
@@ -159,7 +159,6 @@
       this.y2 = y21;
       this.starCount = starCount;
       this.draw = bind(this.draw, this);
-      nebulae.push(this);
       this.rot = 0;
       this.stars = [];
       for (i = j = 0; j <= 280; i = ++j) {
@@ -324,11 +323,12 @@
   window.windowResized = function() {
     canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92;
     document.getElementById('canvas-wrapper').style.width = canvasSize + "px";
-    return resizeCanvas(canvasSize, canvasSize);
+    resizeCanvas(canvasSize, canvasSize);
+    return theNebula = new Nebula();
   };
 
   window.draw = function() {
-    var curDate, j, k, len, len1, lum, nebula, shootingStar, waveform;
+    var curDate, j, len, lum, shootingStar, waveform;
     curDate = Date.now();
     lum = map(globalHue, MIN_GLOBAL_HUE, MAX_GLOBAL_HUE, 12, 18);
     background(color(globalHue, 80, lum, 6));
@@ -337,14 +337,11 @@
       renderWaveform(waveform);
       renderBars(waveform);
     }
-    for (j = 0, len = nebulae.length; j < len; j++) {
-      nebula = nebulae[j];
-      if (nebula != null) {
-        nebula.draw();
-      }
+    if (theNebula != null) {
+      theNebula.draw();
     }
-    for (k = 0, len1 = shootingStars.length; k < len1; k++) {
-      shootingStar = shootingStars[k];
+    for (j = 0, len = shootingStars.length; j < len; j++) {
+      shootingStar = shootingStars[j];
       if (shootingStar != null) {
         shootingStar.draw(curDate);
       }

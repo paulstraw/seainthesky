@@ -32,26 +32,25 @@ class ShootingStar
 
     @x = ~~(Math.random() * canvasSize) + (canvasSize / 10)
     @y = -(~~(Math.random() * 100) + 20)
-    # @velX = -(Math.random() * 1.1) - 0.4
-    @velY = (Math.random() * 2) + 0.6
+    @velY = ((Math.random() * 2) + 0.6) * canvasSize / 1500
     @velX = -@velY
     @alpha = 40
     maxDiameter = canvasSize / 100
     minDiameter = canvasSize / 150
-    @diameter = ~~(Math.random() * (maxDiameter - minDiameter) + minDiameter);
+    @diameter = (Math.random() * (maxDiameter - minDiameter) + minDiameter);
 
     @starParticles = []
     @starParticles.push new StarParticle() for i in [1..50]
 
-  draw: =>
-    @alpha -= 1 if Date.now() - @birth > @maxAge
+  draw: (curDate) =>
+    @alpha -= 1 if curDate - @birth > @maxAge
     if @alpha == 0
       @kill()
       return
 
     @x += @velX
     @y += @velY
-    @diameter -= 0.02
+    @diameter -= 0.015 if @diameter > 0
 
     fill(color(230, 10, 95, @alpha))
     noStroke()
@@ -61,7 +60,7 @@ class ShootingStar
     # drawingContext.shadowBlur = 5;
     # drawingContext.shadowColor = 'rgba(255, 255, 255, 0.75)';
 
-    particle.draw(@x, @y, @diameter * 0.6) for particle in @starParticles
+    particle.draw(@x, @y, @diameter / 2) for particle in @starParticles
 
   kill: =>
     @starParticles = []
@@ -80,10 +79,8 @@ class NebulaStar
 
     @x = Math.cos(angle) * radius;
     @y = Math.sin(angle) * radius;
-    # @x = ~~(Math.random() * 100)
-    # @y = ~~(Math.random() * 100)
     @alpha = 10
-    @diameter = ~~(Math.random() * (5 - 1) + 1)
+    @diameter = (Math.random() * ((canvasSize / 220) - 1) + 1)
     @origDiameter = @diameter
 
     @starParticles = []
@@ -115,7 +112,7 @@ class Nebula
     @rot = 0
 
     @stars = []
-    for i in [0..250]
+    for i in [0..280]
       # starAge = ~~(Math.random() * (@maxAge - (@maxAge / 2)) + @maxAge / 2)
       @stars.push new NebulaStar()
 
@@ -179,11 +176,11 @@ renderWaveform = (waveform) ->
   beginShape()
   strokeJoin(ROUND)
   strokeCap(ROUND)
-  strokeWeight(height / 55)
+  strokeWeight(canvasSize / 55)
   # drawingContext.shadowBlur = 0;
   for wave, i in waveform
     x = map(i, 0, waveform.length, 0, canvasSize + 60)
-    y = map(wave, -1, 1, height - 200, canvasSize + 200)
+    y = map(wave, -1, 1, canvasSize - (canvasSize / 5), canvasSize + (canvasSize / 5))
     vertex(x, y)
   endShape()
 
@@ -194,7 +191,7 @@ renderBars = (waveform) ->
 
   for wave, i in waveform
     x = map(i, 0, waveform.length, 0, canvasSize)
-    y = (-(r + wave * 200)) * (wave * 1.2) + canvasSize
+    y = (-(r + wave * (canvasSize / 5))) * (wave * 1.2) + canvasSize
     x2 = x
     y2 = height + 5
     # console.log(x, y, x2, y2) if ~~(Math.random() * 1000) == 2
@@ -237,7 +234,7 @@ jsonLoaded = (json) ->
 theBeat = null
 theNebula = null
 window.setup = ->
-  canvasSize = Math.min(windowWidth, windowHeight) * 0.8
+  canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92
   document.getElementById('album-art').style.width = "#{canvasSize}px"
 
   theBeat = new Beat()
@@ -254,6 +251,8 @@ window.setup = ->
     song.addEventListener 'click', selectSong
 
 window.draw = ->
+  curDate = Date.now()
+
   lum = map(globalHue, MIN_GLOBAL_HUE, MAX_GLOBAL_HUE, 12, 18)
   background(color(globalHue, 80, lum, 6))
 
@@ -263,6 +262,6 @@ window.draw = ->
 
   theBeat.draw()
   nebula?.draw() for nebula in nebulae
-  shootingStar?.draw() for shootingStar in shootingStars
+  shootingStar?.draw(curDate) for shootingStar in shootingStars
   return null
 

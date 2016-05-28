@@ -27,10 +27,10 @@ body {
 }
 
 #album-art {
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 150px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   z-index: 3;
   opacity: 0.2;
   box-shadow: 0 6px 24px #000;
@@ -43,9 +43,9 @@ ul {
 
 canvas {
   display: block;
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 150px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   z-index: 1;
 }

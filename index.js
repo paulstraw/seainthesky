@@ -53,21 +53,21 @@
       shootingStars.push(this);
       this.x = ~~(Math.random() * canvasSize) + (canvasSize / 10);
       this.y = -(~~(Math.random() * 100) + 20);
-      this.velY = (Math.random() * 2) + 0.6;
+      this.velY = ((Math.random() * 2) + 0.6) * canvasSize / 1500;
       this.velX = -this.velY;
       this.alpha = 40;
       maxDiameter = canvasSize / 100;
       minDiameter = canvasSize / 150;
-      this.diameter = ~~(Math.random() * (maxDiameter - minDiameter) + minDiameter);
+      this.diameter = Math.random() * (maxDiameter - minDiameter) + minDiameter;
       this.starParticles = [];
       for (i = j = 1; j <= 50; i = ++j) {
         this.starParticles.push(new StarParticle());
       }
     }
 
-    ShootingStar.prototype.draw = function() {
+    ShootingStar.prototype.draw = function(curDate) {
       var j, len, particle, ref, results;
-      if (Date.now() - this.birth > this.maxAge) {
+      if (curDate - this.birth > this.maxAge) {
         this.alpha -= 1;
       }
       if (this.alpha === 0) {
@@ -76,7 +76,9 @@
       }
       this.x += this.velX;
       this.y += this.velY;
-      this.diameter -= 0.02;
+      if (this.diameter > 0) {
+        this.diameter -= 0.015;
+      }
       fill(color(230, 10, 95, this.alpha));
       noStroke();
       ellipse(this.x, this.y, this.diameter, this.diameter);
@@ -84,7 +86,7 @@
       results = [];
       for (j = 0, len = ref.length; j < len; j++) {
         particle = ref[j];
-        results.push(particle.draw(this.x, this.y, this.diameter * 0.6));
+        results.push(particle.draw(this.x, this.y, this.diameter / 2));
       }
       return results;
     };
@@ -111,7 +113,7 @@
       this.x = Math.cos(angle) * radius;
       this.y = Math.sin(angle) * radius;
       this.alpha = 10;
-      this.diameter = ~~(Math.random() * (5 - 1) + 1);
+      this.diameter = Math.random() * ((canvasSize / 220) - 1) + 1;
       this.origDiameter = this.diameter;
       this.starParticles = [];
     }
@@ -157,7 +159,7 @@
       nebulae.push(this);
       this.rot = 0;
       this.stars = [];
-      for (i = j = 0; j <= 250; i = ++j) {
+      for (i = j = 0; j <= 280; i = ++j) {
         this.stars.push(new NebulaStar());
       }
     }
@@ -226,11 +228,11 @@
     beginShape();
     strokeJoin(ROUND);
     strokeCap(ROUND);
-    strokeWeight(height / 55);
+    strokeWeight(canvasSize / 55);
     for (i = j = 0, len = waveform.length; j < len; i = ++j) {
       wave = waveform[i];
       x = map(i, 0, waveform.length, 0, canvasSize + 60);
-      y = map(wave, -1, 1, height - 200, canvasSize + 200);
+      y = map(wave, -1, 1, canvasSize - (canvasSize / 5), canvasSize + (canvasSize / 5));
       vertex(x, y);
     }
     return endShape();
@@ -244,7 +246,7 @@
     for (i = j = 0, len = waveform.length; j < len; i = ++j) {
       wave = waveform[i];
       x = map(i, 0, waveform.length, 0, canvasSize);
-      y = (-(r + wave * 200)) * (wave * 1.2) + canvasSize;
+      y = (-(r + wave * (canvasSize / 5))) * (wave * 1.2) + canvasSize;
       x2 = x;
       y2 = height + 5;
       results.push(line(x, y, x2, y2));
@@ -319,7 +321,7 @@
 
   window.setup = function() {
     var j, len, ref, results, song;
-    canvasSize = Math.min(windowWidth, windowHeight) * 0.8;
+    canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92;
     document.getElementById('album-art').style.width = canvasSize + "px";
     theBeat = new Beat();
     theNebula = new Nebula();
@@ -338,7 +340,8 @@
   };
 
   window.draw = function() {
-    var j, k, len, len1, lum, nebula, shootingStar, waveform;
+    var curDate, j, k, len, len1, lum, nebula, shootingStar, waveform;
+    curDate = Date.now();
     lum = map(globalHue, MIN_GLOBAL_HUE, MAX_GLOBAL_HUE, 12, 18);
     background(color(globalHue, 80, lum, 6));
     waveform = fft.waveform();
@@ -354,7 +357,7 @@
     for (k = 0, len1 = shootingStars.length; k < len1; k++) {
       shootingStar = shootingStars[k];
       if (shootingStar != null) {
-        shootingStar.draw();
+        shootingStar.draw(curDate);
       }
     }
     return null;

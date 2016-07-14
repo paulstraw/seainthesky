@@ -26,6 +26,10 @@ body {
   color: #f4f4f4;
 }
 
+body, input, select, textarea, button {
+  font-family: "paralucent", sans-serif;
+}
+
 #canvas-wrapper {
   margin: 150px auto;
   box-shadow: 0 6px 24px #000;
@@ -54,3 +58,13 @@ canvas {
   transform: translateX(-50%);
   z-index: 1;
 }
+
+.song-list {
+  font-size: 24px;
+}
+
+.song-list li {
+  cursor: pointer;
+}
+
+

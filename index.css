@@ -87,3 +87,6 @@ canvas {
 
 .song-list {
   font-size: 24px; }
+
+.song-list li {
+  cursor: pointer; }

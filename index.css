@@ -85,8 +85,9 @@ canvas {
   transform: translateX(-50%);
   z-index: 1; }
 
-.song-list {
-  font-size: 24px; }
-
-.song-list li {
-  cursor: pointer; }
+.player {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  left: 0;
+  border: 1px solid #f00; }

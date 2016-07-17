@@ -11,6 +11,30 @@ r = 1
 canvasSize = 1
 isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i).test(navigator.userAgent)
 
+songs = [
+  {
+    title: 'Tread Lightly',
+    path: './songs/treadlightly'
+  },
+  {
+    title: 'Tamagotchi',
+    path: './songs/tamagotchi'
+  },
+  {
+    title: 'Visions',
+    path: './songs/visions'
+  },
+  {
+    title: 'Krill',
+    path: './songs/krill'
+  },
+  {
+    title: 'Serenity',
+    path: './songs/serenity'
+  }
+]
+songIndex = 0
+
 class StarParticle
   constructor: ->
 
@@ -126,9 +150,9 @@ class Nebula
     # rotate(-@rot)
     pop()
 
-
-selectSong = (e) ->
-  src = e.target.getAttribute('data-src')
+play = ->
+  song = songs[songIndex]
+  src = song.path
   mp3 = "#{src}.mp3"
   json = "#{src}.json"
 
@@ -143,6 +167,8 @@ selectSong = (e) ->
 
   fft.setInput(audioEl) unless isMobile
 
+pause = ->
+  audioEl.pause() if audioEl
 
 renderWaveform = (waveform) ->
   noFill()

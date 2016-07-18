@@ -10,6 +10,8 @@ fft = null
 r = 1
 canvasSize = 1
 isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i).test(navigator.userAgent)
+playing = false
+paused = false
 
 songs = [
   {
@@ -100,7 +102,7 @@ class NebulaStar
     angle = Math.random() * Math.PI * 2
     minRad = canvasSize / 4
     maxRad = canvasSize
-    console.log(minRad, maxRad)
+    # console.log(minRad, maxRad)
     radius = ~~(Math.random() * (maxRad - minRad) + minRad)
 
     @x = Math.cos(angle) * radius;
@@ -150,24 +152,54 @@ class Nebula
     # rotate(-@rot)
     pop()
 
+nextSong = ->
+  songIndex += 1
+  paused = false
+
+  if songIndex >= songs.length
+    songIndex = 0
+
+  setSongTitle()
+
+  if playing
+    play()
+
+setSongTitle = ->
+  document.querySelector('.song-title').innerText = songs[songIndex].title
+
 play = ->
+  playing = true
+
+  if paused
+    paused = false
+    audioEl.play()
+    return
+
+
   song = songs[songIndex]
   src = song.path
   mp3 = "#{src}.mp3"
   json = "#{src}.json"
 
-  loadJSON(json, jsonLoaded)
-
   if audioEl
     audioEl.clearCues()
     audioEl.stop()
   audioEl = createAudio(mp3)
-  audioEl.play()
-  audioEl.pause()
 
-  fft.setInput(audioEl) unless isMobile
+  audioEl.play()
+  setTimeout ->
+    audioEl.pause()
+    fft.setInput(audioEl) unless isMobile
+
+    setTimeout ->
+      loadJSON(json, jsonLoaded)
+    , 150
+  , 150
+
 
 pause = ->
+  playing = false
+  paused = true
   audioEl.pause() if audioEl
 
 renderWaveform = (waveform) ->
@@ -219,16 +251,16 @@ scheduleBars = (bars) ->
       new ShootingStar(bar.duration * 3) for i in [0..1]
 
 # sections will spawn nebulae
-scheduleSections = (sections) ->
-  for section in sections
-    audioEl.addCue section.start, ->
-      console.log 'section', section
+# scheduleSections = (sections) ->
+#   for section in sections
+#     audioEl.addCue section.start, ->
+#       console.log 'section', section
 
 jsonLoaded = (json) ->
   console.log('boom', json)
   scheduleBars(json.bars)
   scheduleBeats(json.beats)
-  scheduleSections(json.sections)
+  # scheduleSections(json.sections)
   audioEl.elt.volume = 0.9
   audioEl.play()
 
@@ -272,3 +304,8 @@ window.draw = ->
   shootingStar?.draw(curDate) for shootingStar in shootingStars
   return null
 
+setSongTitle()
+document.querySelector('.next-song').addEventListener('click', nextSong, false)
+document.querySelector('.play-pause').addEventListener 'click', ->
+  if playing then pause() else play()
+, false

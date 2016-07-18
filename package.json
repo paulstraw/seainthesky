@@ -9,6 +9,7 @@
     "build:js": "./node_modules/coffee-script/bin/coffee -c index.coffee",
     "build:css": "sass index.scss index.css --sourcemap=none"
   },
+  "repository": "https://github.com/paulstraw/seainthesky",
   "author": "",
   "license": "ISC",
   "devDependencies": {

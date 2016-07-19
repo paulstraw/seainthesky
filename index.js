@@ -241,6 +241,7 @@
       audioEl.stop();
     }
     audioEl = createAudio(mp3);
+    audioEl.elt.addEventListener('ended', nextSong, false);
     audioEl.play();
     return setTimeout(function() {
       audioEl.pause();

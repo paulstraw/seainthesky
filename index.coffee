@@ -188,6 +188,7 @@ play = ->
   audioEl = createAudio(mp3)
 
   audioEl.elt.addEventListener 'ended', nextSong, false
+  audioEl.elt.addEventListener 'timeupdate', handleTimeChange, false
 
   audioEl.play()
   setTimeout ->
@@ -199,6 +200,28 @@ play = ->
     , 150
   , 150
 
+minuteSecondStringFromNumber = (num) ->
+  minutes = Math.floor(num / 60)
+  seconds = Math.round(num % 60)
+  seconds = '0' + seconds if seconds < 10
+
+  "#{minutes}:#{seconds}"
+
+
+handleTimeChange = ->
+  percentComplete = 0
+  if audioEl.elt.currentTime > 0
+    percentComplete = (100 / audioEl.elt.duration) * audioEl.elt.currentTime
+
+  curTime = minuteSecondStringFromNumber(audioEl.elt.currentTime)
+  duration = minuteSecondStringFromNumber(audioEl.elt.duration)
+
+  if audioEl.elt.duration
+    document.querySelector('.timer').textContent = "#{curTime}/#{duration}"
+  else
+    document.querySelector('.timer').textContent = ''
+
+  document.querySelector('.progress').style.width = "#{percentComplete}%"
 
 pause = ->
   playing = false

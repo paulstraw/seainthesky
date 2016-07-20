@@ -93,6 +93,20 @@ canvas {
   background: rgba(255, 255, 255, 0.03); }
   .player > * {
     float: right; }
+  .player .progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.03);
+    transition: width 180ms linear; }
+  .player .timer {
+    float: left;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    height: 39px;
+    line-height: 39px;
+    padding-left: 12px; }
   .player .song-title {
     display: inline-block;
     font-size: 18px;

@@ -375,9 +375,14 @@
 
   theNebula = null;
 
+  document.getElementById('canvas-wrapper').style.opacity = 0;
+
+  console.log('hi');
+
   window.setup = function() {
     var cnv, j, len, ref, results, song;
-    canvasSize = Math.min(window.innerWidth, window.innerHeight) * 0.92;
+    document.getElementById('canvas-wrapper').style.opacity = 1;
+    canvasSize = window.innerWidth;
     document.getElementById('canvas-wrapper').style.width = canvasSize + "px";
     theNebula = new Nebula();
     background(2);

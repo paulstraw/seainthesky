@@ -169,6 +169,7 @@ setSongTitle = ->
 
 play = ->
   playing = true
+  document.querySelector('.big-dumb-play-button').classList.add('playing')
   document.querySelector('.play-pause').classList.add('playing')
 
   if paused
@@ -225,6 +226,7 @@ handleTimeChange = ->
 
 pause = ->
   playing = false
+  document.querySelector('.big-dumb-play-button').classList.remove('playing')
   paused = true
   document.querySelector('.play-pause').classList.remove('playing')
   audioEl.pause() if audioEl
@@ -284,7 +286,7 @@ scheduleBars = (bars) ->
 #       console.log 'section', section
 
 jsonLoaded = (json) ->
-  console.log('boom', json)
+  # console.log('boom', json)
   scheduleBars(json.bars)
   scheduleBeats(json.beats)
   # scheduleSections(json.sections)
@@ -334,5 +336,9 @@ window.draw = ->
 setSongTitle()
 document.querySelector('.next-song').addEventListener('click', nextSong, false)
 document.querySelector('.play-pause').addEventListener 'click', ->
+  if playing then pause() else play()
+, false
+
+document.querySelector('.big-dumb-play-button').addEventListener 'click', ->
   if playing then pause() else play()
 , false

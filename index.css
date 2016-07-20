@@ -102,6 +102,25 @@ nav ul {
   box-shadow: 0 6px 24px #000;
   position: relative; }
 
+.big-dumb-play-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 3;
+  cursor: pointer;
+  transition: all 180ms ease-out; }
+  .big-dumb-play-button.playing {
+    opacity: 0; }
+  .big-dumb-play-button img {
+    height: 9%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+
 #album-art {
   width: 100%;
   z-index: 3;

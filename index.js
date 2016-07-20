@@ -227,6 +227,7 @@
   play = function() {
     var json, mp3, song, src;
     playing = true;
+    document.querySelector('.big-dumb-play-button').classList.add('playing');
     document.querySelector('.play-pause').classList.add('playing');
     if (paused) {
       paused = false;
@@ -284,6 +285,7 @@
 
   pause = function() {
     playing = false;
+    document.querySelector('.big-dumb-play-button').classList.remove('playing');
     paused = true;
     document.querySelector('.play-pause').classList.remove('playing');
     if (audioEl) {
@@ -365,7 +367,6 @@
   };
 
   jsonLoaded = function(json) {
-    console.log('boom', json);
     scheduleBars(json.bars);
     scheduleBeats(json.beats);
     audioEl.elt.volume = 0.9;
@@ -430,6 +431,14 @@
   document.querySelector('.next-song').addEventListener('click', nextSong, false);
 
   document.querySelector('.play-pause').addEventListener('click', function() {
+    if (playing) {
+      return pause();
+    } else {
+      return play();
+    }
+  }, false);
+
+  document.querySelector('.big-dumb-play-button').addEventListener('click', function() {
     if (playing) {
       return pause();
     } else {

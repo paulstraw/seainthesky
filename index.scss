@@ -90,6 +90,30 @@ nav {
   position: relative;
 }
 
+.big-dumb-play-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 3;
+  cursor: pointer;
+  transition: all 180ms ease-out;
+
+  &.playing {
+    opacity: 0;
+  }
+
+  img {
+    height: 9%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
 #album-art {
   width: 100%;
   z-index: 3;

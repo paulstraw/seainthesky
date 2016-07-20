@@ -298,7 +298,7 @@ document.getElementById('canvas-wrapper').style.opacity = 0
 console.log('hi')
 window.setup = ->
   document.getElementById('canvas-wrapper').style.opacity = 1
-  canvasSize = window.innerWidth
+  canvasSize = Math.min(window.innerWidth, window.innerHeight)
   document.getElementById('canvas-wrapper').style.width = "#{canvasSize}px"
 
   theNebula = new Nebula()

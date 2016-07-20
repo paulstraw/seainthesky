@@ -169,6 +169,7 @@ setSongTitle = ->
 
 play = ->
   playing = true
+  document.querySelector('.play-pause').classList.add('playing')
 
   if paused
     paused = false
@@ -202,6 +203,7 @@ play = ->
 pause = ->
   playing = false
   paused = true
+  document.querySelector('.play-pause').classList.remove('playing')
   audioEl.pause() if audioEl
 
 renderWaveform = (waveform) ->

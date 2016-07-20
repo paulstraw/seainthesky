@@ -64,13 +64,34 @@ canvas {
   bottom: 100%;
   right: 0;
   left: 0;
+  background: rgba(255, 255, 255, 0.03);
+
+  > * {
+    float: right;
+  }
 
   .song-title {
-
+    display: inline-block;
+    font-size: 18px;
+    height: 39px;
+    line-height: 39px;
+    padding-right: 12px;
   }
 
   button {
+    background: transparent;
+    width: 39px;
+    height: 39px;
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
 
+    img {
+      display: inline-block;
+      transform: scale(1.25);
+      transform-origin: center center;
+    }
   }
 
   .next-song {
@@ -79,7 +100,11 @@ canvas {
 
   .play-pause {
     &.playing {
-
+      .play { display: none; }
+      .pause { display: inline-block; }
     }
+
+    .play { display: inline-block; }
+    .pause { display: none; }
   }
 }

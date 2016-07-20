@@ -89,4 +89,33 @@ canvas {
   position: absolute;
   bottom: 100%;
   right: 0;
-  left: 0; }
+  left: 0;
+  background: rgba(255, 255, 255, 0.03); }
+  .player > * {
+    float: right; }
+  .player .song-title {
+    display: inline-block;
+    font-size: 18px;
+    height: 39px;
+    line-height: 39px;
+    padding-right: 12px; }
+  .player button {
+    background: transparent;
+    width: 39px;
+    height: 39px;
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    text-align: center; }
+    .player button img {
+      display: inline-block;
+      transform: scale(1.25);
+      transform-origin: center center; }
+  .player .play-pause.playing .play {
+    display: none; }
+  .player .play-pause.playing .pause {
+    display: inline-block; }
+  .player .play-pause .play {
+    display: inline-block; }
+  .player .play-pause .pause {
+    display: none; }

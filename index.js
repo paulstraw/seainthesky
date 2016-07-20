@@ -227,6 +227,7 @@
   play = function() {
     var json, mp3, song, src;
     playing = true;
+    document.querySelector('.play-pause').classList.add('playing');
     if (paused) {
       paused = false;
       audioEl.play();
@@ -257,6 +258,7 @@
   pause = function() {
     playing = false;
     paused = true;
+    document.querySelector('.play-pause').classList.remove('playing');
     if (audioEl) {
       return audioEl.pause();
     }

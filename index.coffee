@@ -295,7 +295,6 @@ jsonLoaded = (json) ->
 
 theNebula = null
 document.getElementById('canvas-wrapper').style.opacity = 0
-console.log('hi')
 window.setup = ->
   document.getElementById('canvas-wrapper').style.opacity = 1
   canvasSize = Math.min(window.innerWidth, window.innerHeight)

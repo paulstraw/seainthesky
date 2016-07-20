@@ -15,17 +15,21 @@
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
 
     <link rel="stylesheet" media="screen, projection" href="index.css">
+  </head>
+
+  <body>
+    <div id="canvas-wrapper">
+      <div class="player">
+        <div class="song-title"></div>
+        <button class="next-song">Next</button>
+        <button class="play-pause">Play/Pause</button>
+      </div>
+      <img id="album-art" src="img/albumart.jpg" alt="Visions album cover">
+    </div>
 
     <script src="./p5.js"></script>
     <script src="./p5.dom.js"></script>
     <script src="./p5.sound.js"></script>
     <script src="./index.js"></script>
-  </head>
-
-  <body>
-    <div id="canvas-wrapper">
-      <div class="player">superduper</div>
-      <img id="album-art" src="img/albumart.jpg" alt="Visions album cover">
-    </div>
   </body>
 </html>
